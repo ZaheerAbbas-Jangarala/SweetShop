@@ -1,0 +1,87 @@
+﻿@model IEnumerable<SweetShop.Mvc.Models.Sweet>
+@{
+    ViewData["Title"] = "Manage Sweets";
+}
+
+<div class="d-flex justify-content-between mb-3">
+    <h3>Manage Sweets</h3>
+    <a asp-action="Create" class="btn btn-dark">Add Sweet</a>
+</div>
+<div class="d-flex justify-content-end mb-3">
+    <div class="d-flex justify-content-end mb-3">
+        <form class="d-flex ms-3" method="get" asp-controller="Sweets" asp-action="AdminIndex">
+            <input class="form-control me-2" type="search" name="q" placeholder="Search sweets..." value="@ViewData["SearchQuery"]" />
+            <button class="btn btn-outline-primary" type="submit">Search</button>
+        </form>
+    </div>
+</div>
+<table class="table table-striped table-bordered align-middle">
+    <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Qty</th>
+            <th style="width:220px;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var s in Model)
+        {
+            <tr>
+                <td>@s.Id</td>
+                <td><img src="@s.ImageUrl" class="table-img" /></td>
+                <td>@s.Name</td>
+                <td>@s.Category</td>
+                <td>₹@s.Price</td>
+                <td>@s.Quantity</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@s.Id" class="btn btn-sm btn-warning me-1">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+
+                    <a asp-action="Details" asp-route-id="@s.Id" class="btn btn-sm btn-info me-1">
+                        <i class="fa-solid fa-eye"></i>
+                    </a>
+
+                    <form asp-action="Delete" asp-route-id="@s.Id" method="get" style="display:inline-block">
+                        <button type="submit" class="btn btn-sm btn-danger me-1">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </form>
+
+
+                    <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#restockModal-@s.Id">Restock</button>
+
+                    <!-- Restock modal -->
+                    <div class="modal fade" id="restockModal-@s.Id" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form asp-action="Restock" method="post" class="m-0">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Restock - @s.Name</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="hidden" name="id" value="@s.Id" />
+                                        <div class="mb-3">
+                                            <label class="form-label">Add quantity</label>
+                                            <input class="form-control" type="number" name="addQuantity" value="10" min="1" />
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Restock</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

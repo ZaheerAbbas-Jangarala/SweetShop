@@ -1,0 +1,24 @@
+﻿@model SweetShop.Mvc.Models.Sweet
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h3>Sweet Details</h3>
+
+<div class="card mb-3">
+    <div class="row g-0">
+        <div class="col-md-4">
+            <img src="@Model.ImageUrl" class="img-fluid rounded-start" style="object-fit:cover; height:100%;" />
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h4 class="card-title">@Model.Name</h4>
+                <p class="text-muted">@Model.Category</p>
+                <p>@Model.Description</p>
+                <p class="fw-bold">₹@Model.Price</p>
+                <p>Available: @Model.Quantity</p>
+                <a asp-action="AdminIndex" class="btn btn-secondary">Back to Manage</a>
+            </div>
+        </div>
+    </div>
+</div>
